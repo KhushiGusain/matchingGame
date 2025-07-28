@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import RemoteImage from './RemoteImage';
 
 export default function GameHeader({ instruction, onHomePress, onStarPress }) {
   return (
@@ -8,20 +9,18 @@ export default function GameHeader({ instruction, onHomePress, onStarPress }) {
         style={styles.homeButton}
         onPress={onHomePress}
       >
-        <Image 
-          source={require('../../assets/images/home.png')}
+        <RemoteImage 
+          assetName="home"
           style={styles.buttonIcon}
-          resizeMode="contain"
         />
       </TouchableOpacity>
       
       <Text style={styles.instruction}>{instruction}</Text>
       
       <TouchableOpacity style={styles.starButton} onPress={onStarPress}>
-        <Image 
-          source={require('../../assets/images/star.png')}
+        <RemoteImage 
+          assetName="star"
           style={styles.starIcon}
-          resizeMode="contain"
         />
       </TouchableOpacity>
     </View>

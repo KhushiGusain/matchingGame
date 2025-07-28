@@ -172,7 +172,6 @@ export default function GameScreen({ navigation }) {
 
   // Handle next level or navigate to success
   const handleNextPress = async () => {
-    console.log('handleNextPress called, currentLevel:', currentLevel, 'GAME_LEVELS.length:', GAME_LEVELS.length);
     
     if (currentLevel < GAME_LEVELS.length - 1) {
       // Calculate score for current level
@@ -180,7 +179,6 @@ export default function GameScreen({ navigation }) {
       const levelScore = correctLines.length;
       const newTotalScore = totalScore + levelScore;
       
-      console.log('Moving to next level. Level score:', levelScore, 'New total score:', newTotalScore);
       
       // Save level score
       setLevelScores(prev => [...prev, { level: currentLevel, score: levelScore }]);
@@ -188,14 +186,12 @@ export default function GameScreen({ navigation }) {
       setTotalScore(newTotalScore);
       setCurrentLevel(currentLevel + 1);
     } else {
-      console.log('Game completed! Calculating final score...');
       
       // Calculate final score for last level and add to total
       const correctLines = permanentLines.filter(line => line.isCorrect);
       const finalLevelScore = correctLines.length;
       const finalTotalScore = totalScore + finalLevelScore;
       
-      console.log('Final level score:', finalLevelScore, 'Final total score:', finalTotalScore);
       
       // Save final level score
       const updatedLevelScores = [...levelScores, { level: currentLevel, score: finalLevelScore }];
@@ -222,8 +218,7 @@ export default function GameScreen({ navigation }) {
       
       const formattedTime = formatTime(timeTakenInMilliseconds);
       
-      console.log('Time taken:', formattedTime);
-      console.log('Matches tracked:', matches.length);
+    
       
       // Save game data to Firestore
       try {
@@ -232,17 +227,14 @@ export default function GameScreen({ navigation }) {
           timeTaken: formattedTime
         };
         
-        console.log('Attempting to save game data:', gameData);
         
         await saveGameScore(gameData);
-        console.log('Game data saved to Firestore successfully');
+
       } catch (error) {
         console.error('Failed to save game data to Firestore:', error);
         console.error('Error details:', error.message);
-        console.error('Error stack:', error.stack);
       }
-      
-      console.log('Navigating to Success screen...');
+    
       
       // Navigate to success screen with score and time data
       navigation.navigate('Success', {
@@ -352,36 +344,26 @@ export default function GameScreen({ navigation }) {
         {/* Main Content Area */}
         <View style={styles.matchingContainer}>
           {currentLevel === 1 ? (
-            // Custom layout for cat/dog level with swapped text positioning
-            <>
-              {/* Dog row (top) - Dog image with "Cat" text */}
+            // Data-driven layout for cat/dog level
+            currentLevelData.items.map((item, index) => (
               <CatDogMatchingRow
-                imageSource={require('../../assets/images/dog.png')}
-                leftDotId="dog_left"
-                rightDotId="dog_right"
-                text="Cat"
+                key={index}
+                assetName={item.imageId}
+                leftDotId={item.imageDotId}
+                rightDotId={item.textDotId}
+                text={item.text}
                 activeDot={activeDot}
                 onDotLayout={saveDotPosition}
               />
-              
-              {/* Cat row (bottom) - Cat image with "Dog" text */}
-              <CatDogMatchingRow
-                imageSource={require('../../assets/images/cat2.png')}
-                leftDotId="cat_left"
-                rightDotId="cat_right"
-                text="Dog"
-                activeDot={activeDot}
-                onDotLayout={saveDotPosition}
-              />
-            </>
+            ))
           ) : (
             // Default layout for apple/ball level
             currentLevelData.items.map((item, index) => (
               <AppleBallMatchingRow
                 key={index}
-                assetName={item.text.toLowerCase()}
-                leftDotId={item.leftDotId}
-                rightDotId={item.rightDotId}
+                assetName={item.imageId}
+                leftDotId={item.imageDotId}
+                rightDotId={item.textDotId}
                 text={item.text}
                 activeDot={activeDot}
                 onDotLayout={saveDotPosition}

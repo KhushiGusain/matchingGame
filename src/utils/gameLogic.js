@@ -1,32 +1,14 @@
 // Game logic utilities
 
 export const isCorrectMatch = (fromDot, toDot, currentLevel, currentItems) => {
-  if (currentLevel === 1) {
-    // Level 1 (Cat/Dog) - Special matching logic based on visual layout
-    // Dog image dots should connect to Cat text dots
-    // Cat image dots should connect to Dog text dots
-    const correctMatches = [
-      ['dog_left', 'cat_right'],  // Dog image left dot to Cat text right dot
-      ['cat_left', 'dog_right']   // Cat image left dot to Dog text right dot
-    ];
-    
-    for (const [dot1, dot2] of correctMatches) {
-      if ((fromDot === dot1 && toDot === dot2) || (fromDot === dot2 && toDot === dot1)) {
-        return true;
-      }
+  // Data-driven matching logic for all levels
+  for (const item of currentItems) {
+    if ((fromDot === item.imageDotId && toDot === item.textDotId) ||
+        (fromDot === item.textDotId && toDot === item.imageDotId)) {
+      return true;
     }
-    
-    return false;
-  } else {
-    // Level 0 (Apple/Ball) - Standard matching logic
-    for (const item of currentItems) {
-      if ((fromDot === item.leftDotId && toDot === item.rightDotId) ||
-          (fromDot === item.rightDotId && toDot === item.leftDotId)) {
-        return true;
-      }
-    }
-    return false;
   }
+  return false;
 };
 
 export const shouldConnect = (dot1, dot2, currentLevel, currentItems) => {
@@ -57,7 +39,7 @@ export const findNearestDot = (x, y, dotPositions, currentItems, threshold = 80)
   let nearestDot = null;
   let nearestDistance = threshold;
   
-  const expectedDotIds = currentItems.flatMap(item => [item.leftDotId, item.rightDotId]);
+  const expectedDotIds = currentItems.flatMap(item => [item.imageDotId, item.textDotId]);
   
   Object.keys(dotPositions).forEach(dotId => {
     if (expectedDotIds.includes(dotId)) {

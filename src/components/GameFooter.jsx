@@ -1,14 +1,14 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import RemoteImage from './RemoteImage';
 
 export default function GameFooter({ onSoundPress, onNextPress }) {
   return (
     <View style={styles.bottomSection}>
       <TouchableOpacity style={styles.soundButton} onPress={onSoundPress}>
-        <Image 
-          source={require('../../assets/images/sound.png')}
+        <RemoteImage 
+          assetName="sound"
           style={styles.buttonIcon}
-          resizeMode="contain"
         />
       </TouchableOpacity>
       
@@ -16,10 +16,9 @@ export default function GameFooter({ onSoundPress, onNextPress }) {
         style={styles.nextButton}
         onPress={onNextPress}
       >
-        <Image 
-          source={require('../../assets/images/back.png')}
+        <RemoteImage 
+          assetName="back"
           style={styles.nextButtonIcon}
-          resizeMode="contain"
         />
       </TouchableOpacity>
     </View>

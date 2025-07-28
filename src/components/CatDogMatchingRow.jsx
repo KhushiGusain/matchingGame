@@ -1,8 +1,9 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import RemoteImage from './RemoteImage';
 
 export default function CatDogMatchingRow({ 
-  imageSource, 
+  assetName, 
   leftDotId, 
   rightDotId, 
   text, 
@@ -11,10 +12,9 @@ export default function CatDogMatchingRow({
 }) {
   return (
     <View style={styles.matchingRow}>
-      <Image 
-        source={imageSource}
+      <RemoteImage 
+        assetName={assetName}
         style={styles.itemImage}
-        resizeMode="contain"
       />
       <View style={styles.dotsContainer}>
         <TouchableOpacity 

@@ -4,18 +4,20 @@ export const GAME_LEVELS = [
   {
     id: 0,
     instruction: "Can you match what goes together?",
-    componentType: 'AppleBallMatchingRow', // Uses AppleBallMatchingRow component
+    componentType: 'AppleBallMatchingRow',
     items: [
       {
-        imageSource: require('../../assets/images/apple.png'),
-        leftDotId: 'apple_left',
-        rightDotId: 'apple_right',
+        imageId: 'apple',
+        imageDotId: 'apple_left',
+        textId: 'apple_text',
+        textDotId: 'apple_right',
         text: 'apple'
       },
       {
-        imageSource: require('../../assets/images/ball.png'),
-        leftDotId: 'ball_left',
-        rightDotId: 'ball_right',
+        imageId: 'ball',
+        imageDotId: 'ball_left',
+        textId: 'ball_text',
+        textDotId: 'ball_right',
         text: 'ball'
       }
     ]
@@ -23,19 +25,21 @@ export const GAME_LEVELS = [
   {
     id: 1,
     instruction: "Can you match what goes together?",
-    componentType: 'CatDogMatchingRow', // Uses CatDogMatchingRow component
+    componentType: 'CatDogMatchingRow',
     items: [
       {
-        imageSource: require('../../assets/images/dog.png'),
-        leftDotId: 'dog_left',
-        rightDotId: 'dog_right',
-        text: 'Dog'
+        imageId: 'dog',
+        imageDotId: 'dog_left',
+        textId: 'cat_text',
+        textDotId: 'cat_right',
+        text: 'Cat'
       },
       {
-        imageSource: require('../../assets/images/cat2.png'),
-        leftDotId: 'cat_left',
-        rightDotId: 'cat_right',
-        text: 'Cat'
+        imageId: 'cat2',
+        imageDotId: 'cat_left',
+        textId: 'dog_text',
+        textDotId: 'dog_right',
+        text: 'Dog'
       }
     ]
   }

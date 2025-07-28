@@ -195,7 +195,6 @@ const styles = StyleSheet.create({
     borderRadius: 2.5,
     transform: [{ rotate: '45deg' }],
   },
-  // Improved dots positioning
   dot1: {
     position: 'absolute',
     top: height * 0.06,

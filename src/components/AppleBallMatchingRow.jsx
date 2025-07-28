@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import RemoteImage from './RemoteImage';
 
 export default function AppleBallMatchingRow({ 
   assetName, 
@@ -9,22 +10,10 @@ export default function AppleBallMatchingRow({
   activeDot, 
   onDotLayout 
 }) {
-  // Map asset names to local image sources
-  const getImageSource = (assetName) => {
-    const imageMap = {
-      'apple': require('../../assets/images/apple.png'),
-      'ball': require('../../assets/images/ball.png'),
-      'cat': require('../../assets/images/cat.png'),
-      'cat2': require('../../assets/images/cat2.png'),
-      'dog': require('../../assets/images/dog.png'),
-    };
-    return imageMap[assetName] || require('../../assets/images/apple.png');
-  };
-
   return (
     <View style={styles.matchingRow}>
-      <Image 
-        source={getImageSource(assetName)}
+      <RemoteImage 
+        assetName={assetName}
         style={styles.itemImage}
       />
       <View style={styles.dotsContainer}>
