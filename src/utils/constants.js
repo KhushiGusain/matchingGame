@@ -30,15 +30,15 @@ export const GAME_LEVELS = [
       {
         imageId: 'dog',
         imageDotId: 'dog_left',
-        textId: 'cat_text',
-        textDotId: 'cat_right',
+        textId: 'dog_text',
+        textDotId: 'dog_right',
         text: 'Cat'
       },
       {
         imageId: 'cat2',
         imageDotId: 'cat_left',
-        textId: 'dog_text',
-        textDotId: 'dog_right',
+        textId: 'cat_text',
+        textDotId: 'cat_right',
         text: 'Dog'
       }
     ]
