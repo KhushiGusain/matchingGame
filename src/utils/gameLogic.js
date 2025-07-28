@@ -1,14 +1,12 @@
 // Game logic utilities
 
 export const isCorrectMatch = (fromDot, toDot, currentLevel, currentItems) => {
-  // Data-driven matching logic for all levels
-  for (const item of currentItems) {
-    if ((fromDot === item.imageDotId && toDot === item.textDotId) ||
-        (fromDot === item.textDotId && toDot === item.imageDotId)) {
-      return true;
-    }
-  }
-  return false;
+  // Universal matching logic based on image identity
+  const fromAnimal = fromDot.split('_')[0]; // Extract animal/object type
+  const toAnimal = toDot.split('_')[0]; // Extract animal/object type
+  
+  // Correct match: same animal/object type (dog_left ↔ dog_right, cat_left ↔ cat_right, etc.)
+  return fromAnimal === toAnimal;
 };
 
 export const shouldConnect = (dot1, dot2, currentLevel, currentItems) => {

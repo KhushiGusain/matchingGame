@@ -9,11 +9,11 @@ import LineDrawing from '../components/LineDrawing';
 import { saveGameScore } from '../services/firestoreService';
 import { ANIMATION_DURATION, COLORS, GAME_LEVELS } from '../utils/constants';
 import {
-  connectionExists,
-  findNearestDot,
-  getDotPositions,
-  isHorizontalLine,
-  shouldConnect
+    connectionExists,
+    findNearestDot,
+    getDotPositions,
+    isHorizontalLine,
+    shouldConnect
 } from '../utils/gameLogic';
 
 export default function GameScreen({ navigation }) {
@@ -343,33 +343,40 @@ export default function GameScreen({ navigation }) {
 
         {/* Main Content Area */}
         <View style={styles.matchingContainer}>
-          {currentLevel === 1 ? (
-            // Data-driven layout for cat/dog level
-            currentLevelData.items.map((item, index) => (
-              <CatDogMatchingRow
+          {currentLevelData.items.map((item, index) => {
+            // Universal approach: determine text and dot IDs based on level requirements
+            let displayText = item.text;
+            let leftDotId = item.imageDotId;
+            let rightDotId = item.textDotId;
+            
+            // For level 1, swap the text display and dot connections
+            if (currentLevel === 1) {
+              if (item.imageId === 'dog') {
+                displayText = 'Cat';
+                leftDotId = 'dog_left';
+                rightDotId = 'cat_right'; // Dog image connects to cat text
+              } else if (item.imageId === 'cat2') {
+                displayText = 'Dog';
+                leftDotId = 'cat_left';
+                rightDotId = 'dog_right'; // Cat image connects to dog text
+              }
+            }
+            
+            // Use the appropriate component based on level
+            const Component = currentLevel === 1 ? CatDogMatchingRow : AppleBallMatchingRow;
+            
+            return (
+              <Component
                 key={index}
                 assetName={item.imageId}
-                leftDotId={item.imageDotId}
-                rightDotId={item.textDotId}
-                text={item.text}
+                leftDotId={leftDotId}
+                rightDotId={rightDotId}
+                text={displayText}
                 activeDot={activeDot}
                 onDotLayout={saveDotPosition}
               />
-            ))
-          ) : (
-            // Default layout for apple/ball level
-            currentLevelData.items.map((item, index) => (
-              <AppleBallMatchingRow
-                key={index}
-                assetName={item.imageId}
-                leftDotId={item.imageDotId}
-                rightDotId={item.textDotId}
-                text={item.text}
-                activeDot={activeDot}
-                onDotLayout={saveDotPosition}
-              />
-            ))
-          )}
+            );
+          })}
         </View>
 
         {/* Bottom Section */}
