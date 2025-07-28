@@ -15,16 +15,27 @@ const GAME_SCORES_COLLECTION = 'gameScores';
  */
 export const saveGameScore = async (gameData) => {
   try {
-    const docRef = await addDoc(collection(db, GAME_SCORES_COLLECTION), {
+    console.log('Starting to save game score...');
+    console.log('Firestore db object:', db);
+    console.log('Collection name:', GAME_SCORES_COLLECTION);
+    
+    const docData = {
       ...gameData,
       timestamp: new Date(),
       createdAt: new Date().toISOString()
-    });
+    };
+    
+    console.log('Document data to save:', docData);
+    
+    const docRef = await addDoc(collection(db, GAME_SCORES_COLLECTION), docData);
     
     console.log('Game score saved with ID:', docRef.id);
     return docRef.id;
   } catch (error) {
     console.error('Error saving game score:', error);
+    console.error('Error code:', error.code);
+    console.error('Error message:', error.message);
+    console.error('Full error object:', error);
     throw error;
   }
 };
