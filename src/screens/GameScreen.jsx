@@ -379,7 +379,7 @@ export default function GameScreen({ navigation }) {
             currentLevelData.items.map((item, index) => (
               <AppleBallMatchingRow
                 key={index}
-                imageSource={item.imageSource}
+                assetName={item.text.toLowerCase()}
                 leftDotId={item.leftDotId}
                 rightDotId={item.rightDotId}
                 text={item.text}

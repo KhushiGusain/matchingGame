@@ -16,7 +16,7 @@ export const GAME_LEVELS = [
         imageSource: require('../../assets/images/ball.png'),
         leftDotId: 'ball_left',
         rightDotId: 'ball_right',
-        text: 'Ball'
+        text: 'ball'
       }
     ]
   },
