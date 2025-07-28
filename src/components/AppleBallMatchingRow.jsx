@@ -1,8 +1,9 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import RemoteImage from './RemoteImage';
 
 export default function AppleBallMatchingRow({ 
-  imageSource, 
+  assetName, 
   leftDotId, 
   rightDotId, 
   text, 
@@ -11,10 +12,10 @@ export default function AppleBallMatchingRow({
 }) {
   return (
     <View style={styles.matchingRow}>
-      <Image 
-        source={imageSource}
+      <RemoteImage 
+        assetName={assetName}
         style={styles.itemImage}
-        resizeMode="contain"
+        fallbackSource={require('../../assets/images/apple.png')}
       />
       <View style={styles.dotsContainer}>
         <TouchableOpacity 

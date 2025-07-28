@@ -202,20 +202,34 @@ export default function GameScreen({ navigation }) {
       
       // Calculate time taken
       const gameEndTime = Date.now();
-      const timeTakenInSeconds = Math.floor((gameEndTime - gameStartTime) / 1000);
+      const timeTakenInMilliseconds = gameEndTime - gameStartTime;
       
-      console.log('Time taken:', timeTakenInSeconds, 'seconds');
+      // Format time as MM:SS or SS.MS for better readability
+      const formatTime = (milliseconds) => {
+        const totalSeconds = Math.floor(milliseconds / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        const ms = Math.floor((milliseconds % 1000) / 10); // Show centiseconds
+        
+        if (minutes > 0) {
+          return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        } else if (seconds > 0) {
+          return `${seconds}.${ms.toString().padStart(2, '0')}s`;
+        } else {
+          return `${ms}ms`;
+        }
+      };
+      
+      const formattedTime = formatTime(timeTakenInMilliseconds);
+      
+      console.log('Time taken:', formattedTime);
       console.log('Matches tracked:', matches.length);
       
       // Save game data to Firestore
       try {
         const gameData = {
           totalScore: finalTotalScore,
-          timeTaken: timeTakenInSeconds,
-          levelScores: updatedLevelScores,
-          matches: matches,
-          gameStartTime: gameStartTime,
-          gameEndTime: gameEndTime
+          timeTaken: formattedTime
         };
         
         console.log('Attempting to save game data:', gameData);
@@ -233,7 +247,7 @@ export default function GameScreen({ navigation }) {
       // Navigate to success screen with score and time data
       navigation.navigate('Success', {
         score: finalTotalScore,
-        timeTaken: timeTakenInSeconds,
+        timeTaken: formattedTime,
         startTime: gameStartTime
       });
     }

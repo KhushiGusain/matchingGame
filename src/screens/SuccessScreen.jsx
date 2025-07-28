@@ -12,27 +12,12 @@ export default function SuccessScreen({ navigation }) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const bounceAnim = useRef(new Animated.Value(0.9)).current;
 
-  // Calculate time taken if not provided
-  const calculateTimeTaken = () => {
-    if (timeTaken > 0) {
-      return timeTaken;
-    }
-    if (startTime) {
-      const gameEndTime = Date.now();
-      return Math.floor((gameEndTime - startTime) / 1000);
-    }
-    return 0;
-  };
-
-  const finalTimeTaken = calculateTimeTaken();
+  // Use the timeTaken directly from GameScreen
+  const finalTimeTaken = timeTaken || 0;
   const finalScore = score || 0;
 
-  // Format time as MM:SS
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
+  // Display the time as received from GameScreen
+  const displayTime = typeof finalTimeTaken === 'string' ? finalTimeTaken : `${finalTimeTaken}s`;
 
   useEffect(() => {
     // Animate success title with bounce
@@ -109,7 +94,7 @@ export default function SuccessScreen({ navigation }) {
           
           <View style={styles.timeBox}>
             <Text style={styles.timeLabel}>TIME TAKEN</Text>
-            <Text style={styles.timeValue}>{formatTime(finalTimeTaken)}</Text>
+            <Text style={styles.timeValue}>{displayTime}</Text>
           </View>
         </Animated.View>
 

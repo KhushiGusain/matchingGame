@@ -9,9 +9,6 @@ const GAME_SCORES_COLLECTION = 'gameScores';
  * @param {Object} gameData - Game data to save
  * @param {number} gameData.totalScore - Total score achieved
  * @param {number} gameData.timeTaken - Time taken in seconds
- * @param {Array} gameData.levelScores - Array of scores for each level
- * @param {Array} gameData.matches - Array of match details (correct/incorrect)
- * @param {string} gameData.playerName - Player name (optional)
  */
 export const saveGameScore = async (gameData) => {
   try {
@@ -19,10 +16,10 @@ export const saveGameScore = async (gameData) => {
     console.log('Firestore db object:', db);
     console.log('Collection name:', GAME_SCORES_COLLECTION);
     
+    // Only save essential data: totalScore and timeTaken
     const docData = {
-      ...gameData,
-      timestamp: new Date(),
-      createdAt: new Date().toISOString()
+      totalScore: gameData.totalScore,
+      timeTaken: gameData.timeTaken
     };
     
     console.log('Document data to save:', docData);
