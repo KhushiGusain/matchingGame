@@ -172,11 +172,15 @@ export default function GameScreen({ navigation }) {
 
   // Handle next level or navigate to success
   const handleNextPress = async () => {
+    console.log('handleNextPress called, currentLevel:', currentLevel, 'GAME_LEVELS.length:', GAME_LEVELS.length);
+    
     if (currentLevel < GAME_LEVELS.length - 1) {
       // Calculate score for current level
       const correctLines = permanentLines.filter(line => line.isCorrect);
       const levelScore = correctLines.length;
       const newTotalScore = totalScore + levelScore;
+      
+      console.log('Moving to next level. Level score:', levelScore, 'New total score:', newTotalScore);
       
       // Save level score
       setLevelScores(prev => [...prev, { level: currentLevel, score: levelScore }]);
@@ -184,10 +188,14 @@ export default function GameScreen({ navigation }) {
       setTotalScore(newTotalScore);
       setCurrentLevel(currentLevel + 1);
     } else {
+      console.log('Game completed! Calculating final score...');
+      
       // Calculate final score for last level and add to total
       const correctLines = permanentLines.filter(line => line.isCorrect);
       const finalLevelScore = correctLines.length;
       const finalTotalScore = totalScore + finalLevelScore;
+      
+      console.log('Final level score:', finalLevelScore, 'Final total score:', finalTotalScore);
       
       // Save final level score
       const updatedLevelScores = [...levelScores, { level: currentLevel, score: finalLevelScore }];
@@ -195,6 +203,9 @@ export default function GameScreen({ navigation }) {
       // Calculate time taken
       const gameEndTime = Date.now();
       const timeTakenInSeconds = Math.floor((gameEndTime - gameStartTime) / 1000);
+      
+      console.log('Time taken:', timeTakenInSeconds, 'seconds');
+      console.log('Matches tracked:', matches.length);
       
       // Save game data to Firestore
       try {
@@ -207,11 +218,17 @@ export default function GameScreen({ navigation }) {
           gameEndTime: gameEndTime
         };
         
+        console.log('Attempting to save game data:', gameData);
+        
         await saveGameScore(gameData);
         console.log('Game data saved to Firestore successfully');
       } catch (error) {
         console.error('Failed to save game data to Firestore:', error);
+        console.error('Error details:', error.message);
+        console.error('Error stack:', error.stack);
       }
+      
+      console.log('Navigating to Success screen...');
       
       // Navigate to success screen with score and time data
       navigation.navigate('Success', {
