@@ -4,10 +4,10 @@
 export const getIdentifierFromDotId = (dotId, currentItems) => {
   for (const item of currentItems) {
     if (item.imageDotId === dotId) {
-      return item.identifier;
+      return item.imageIdentifier || item.identifier; // Use imageIdentifier if available
     }
     if (item.textDotId === dotId) {
-      return item.identifier;
+      return item.textIdentifier || item.identifier; // Use textIdentifier if available
     }
   }
   return null;

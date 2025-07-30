@@ -12,7 +12,8 @@ export const GAME_LEVELS = [
         textId: 'apple_text',
         textDotId: 'apple_right',
         text: 'apple',
-        identifier: 'apple' // Unique identifier for matching
+        imageIdentifier: 'apple', // Apple image identifier
+        textIdentifier: 'apple'   // Apple text identifier
       },
       {
         imageId: 'ball',
@@ -20,7 +21,8 @@ export const GAME_LEVELS = [
         textId: 'ball_text',
         textDotId: 'ball_right',
         text: 'ball',
-        identifier: 'ball' // Unique identifier for matching
+        imageIdentifier: 'ball', // Ball image identifier
+        textIdentifier: 'ball'   // Ball text identifier
       }
     ]
   },
@@ -33,17 +35,19 @@ export const GAME_LEVELS = [
         imageId: 'dog',
         imageDotId: 'dog_left',
         textId: 'dog_text',
-        textDotId: 'dog_right', // Dog image connects to dog text (same identifier)
+        textDotId: 'cat_right', // Dog text uses cat's dot position (criss-cross)
         text: 'Cat', // Misleading text display
-        identifier: 'dog' // Same identifier for dog image and dog text
+        imageIdentifier: 'dog', // Dog image identifier
+        textIdentifier: 'cat'   // Cat text identifier (matches visual text)
       },
       {
         imageId: 'cat2',
         imageDotId: 'cat_left',
         textId: 'cat_text',
-        textDotId: 'cat_right', // Cat image connects to cat text (same identifier)
+        textDotId: 'dog_right', // Cat text uses dog's dot position (criss-cross)
         text: 'Dog', // Misleading text display
-        identifier: 'cat' // Same identifier for cat image and cat text
+        imageIdentifier: 'cat', // Cat image identifier
+        textIdentifier: 'dog'   // Dog text identifier (matches visual text)
       }
     ]
   }
