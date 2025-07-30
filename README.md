@@ -4,14 +4,16 @@ A React Native/Expo matching game with universal matching logic and dynamic leve
 
 ## Features
 
-- **Universal Matching Logic**: Scalable matching system that works for any number of levels
+- **Universal Matching Component**: Single `MatchingRow` component for all levels
+- **Identifier-Based Matching**: Universal matching logic based on unique identifiers
+- **Layout-Independent**: Works with side-by-side, criss-cross, or any layout
 - **Dynamic Levels**: Multiple game levels with different items (Apple/Ball, Cat/Dog)
 - **Interactive Line Drawing**: Touch and drag to draw lines between matching dots
 - **Visual Feedback**: Green lines for correct matches, red lines for incorrect matches
-- **Puzzle Elements**: Level 1 features swapped text display to challenge players
+- **Puzzle Elements**: Level 1 features misleading text display to challenge players
 - **Optimized Performance**: Pre-defined dot positions for consistent layout
 - **Responsive Design**: Works on different screen sizes
-- **Modular Components**: Reusable components for easy maintenance
+- **Scalable Architecture**: Add new levels with just data changes
 
 ## Game Levels
 
@@ -79,8 +81,7 @@ A React Native/Expo matching game with universal matching logic and dynamic leve
 ```
 src/
 ├── components/
-│   ├── AppleBallMatchingRow.jsx  # Apple/Ball level component
-│   ├── CatDogMatchingRow.jsx     # Cat/Dog level component
+│   ├── MatchingRow.jsx           # Universal matching row component
 │   ├── GameHeader.jsx            # Header with home button and instructions
 │   ├── GameFooter.jsx            # Footer with sound and next buttons
 │   ├── LineDrawing.jsx           # SVG line drawing component
@@ -100,22 +101,23 @@ src/
 
 ## Universal Matching Logic
 
-The game uses a single, scalable matching algorithm:
+The game uses a single, scalable matching algorithm based on unique identifiers:
 
 ```javascript
-export const isCorrectMatch = (fromDot, toDot, currentLevel, currentItems) => {
-  const fromAnimal = fromDot.split('_')[0]; // Extract animal/object type
-  const toAnimal = toDot.split('_')[0];
+export const isCorrectMatch = (fromDot, toDot, currentLevel, currentItems, matchingMode = 'straight') => {
+  const fromIdentifier = getIdentifierFromDotId(fromDot, currentItems);
+  const toIdentifier = getIdentifierFromDotId(toDot, currentItems);
   
-  // Correct match: same type (dog_left ↔ dog_right, cat_left ↔ cat_right, etc.)
-  return fromAnimal === toAnimal;
+  // Universal matching: same identifier (dog image ↔ dog text, cat image ↔ cat text)
+  // Layout mode only affects visual positioning, not matching logic
+  return fromIdentifier === toIdentifier && fromIdentifier && toIdentifier;
 };
 ```
 
-This logic works for any level:
-- **Level 0**: `apple_left` ↔ `apple_right` = ✅ correct
-- **Level 1**: `dog_left` ↔ `dog_right` = ✅ correct
-- **Future Levels**: `bird_left` ↔ `bird_right` = ✅ correct
+This logic works for any level and layout:
+- **Level 0**: `apple` image ↔ `apple` text = ✅ correct
+- **Level 1**: `dog` image ↔ `dog` text = ✅ correct (regardless of criss-cross positioning)
+- **Future Levels**: `bird` image ↔ `bird` text = ✅ correct
 
 ## Technologies Used
 

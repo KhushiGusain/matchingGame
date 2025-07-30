@@ -1,16 +1,47 @@
 // Game logic utilities
 
-export const isCorrectMatch = (fromDot, toDot, currentLevel, currentItems) => {
-  // Universal matching logic based on image identity
-  const fromAnimal = fromDot.split('_')[0]; // Extract animal/object type
-  const toAnimal = toDot.split('_')[0]; // Extract animal/object type
-  
-  // Correct match: same animal/object type (dog_left ↔ dog_right, cat_left ↔ cat_right, etc.)
-  return fromAnimal === toAnimal;
+// Helper function to get identifier from dot ID
+export const getIdentifierFromDotId = (dotId, currentItems) => {
+  for (const item of currentItems) {
+    if (item.imageDotId === dotId) {
+      return item.identifier;
+    }
+    if (item.textDotId === dotId) {
+      return item.identifier;
+    }
+  }
+  return null;
 };
 
-export const shouldConnect = (dot1, dot2, currentLevel, currentItems) => {
-  return isCorrectMatch(dot1, dot2, currentLevel, currentItems);
+// Helper function to get dot type (image or text) from dot ID
+export const getDotType = (dotId, currentItems) => {
+  for (const item of currentItems) {
+    if (item.imageDotId === dotId) {
+      return 'image';
+    }
+    if (item.textDotId === dotId) {
+      return 'text';
+    }
+  }
+  return null;
+};
+
+export const isCorrectMatch = (fromDot, toDot, currentLevel, currentItems, matchingMode = 'straight') => {
+  const fromIdentifier = getIdentifierFromDotId(fromDot, currentItems);
+  const toIdentifier = getIdentifierFromDotId(toDot, currentItems);
+  const fromType = getDotType(fromDot, currentItems);
+  const toType = getDotType(toDot, currentItems);
+  
+  // Must connect image to text
+  if (fromType === toType) return false;
+  
+  // Universal matching: same identifier (dog image ↔ dog text, cat image ↔ cat text)
+  // Layout mode only affects visual positioning, not matching logic
+  return fromIdentifier === toIdentifier && fromIdentifier && toIdentifier;
+};
+
+export const shouldConnect = (dot1, dot2, currentLevel, currentItems, matchingMode = 'straight') => {
+  return isCorrectMatch(dot1, dot2, currentLevel, currentItems, matchingMode);
 };
 
 export const connectionExists = (dot1, dot2, permanentLines) => {
@@ -64,11 +95,13 @@ export const getDotPositions = (currentLevel) => {
       'ball_right': { x: 478.5, y: 319.5 }
     };
   } else if (currentLevel === 1) {
+    // Criss-cross visual layout: dog text at bottom right, cat text at top right
+    // But matching logic is still dog ↔ dog, cat ↔ cat
     return {
-      'dog_left': { x: 377.5, y: 149.5 },
-      'dog_right': { x: 478.5, y: 149.5 },
-      'cat_left': { x: 377.5, y: 319.5 },
-      'cat_right': { x: 478.5, y: 319.5 }
+      'dog_left': { x: 377.5, y: 149.5 },   // Dog image (top left)
+      'dog_right': { x: 478.5, y: 319.5 },  // Dog text (bottom right) - criss-cross position
+      'cat_left': { x: 377.5, y: 319.5 },   // Cat image (bottom left)
+      'cat_right': { x: 478.5, y: 149.5 }   // Cat text (top right) - criss-cross position
     };
   }
   return {};

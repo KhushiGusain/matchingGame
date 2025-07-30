@@ -2,13 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import RemoteImage from './RemoteImage';
 
-export default function CatDogMatchingRow({ 
+export default function MatchingRow({ 
   assetName, 
   leftDotId, 
   rightDotId, 
   text, 
   activeDot, 
-  onDotLayout 
+  onDotLayout,
+  matchingMode = 'straight' // New prop to control matching behavior
 }) {
   return (
     <View style={styles.matchingRow}>

@@ -1,11 +1,10 @@
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
-import AppleBallMatchingRow from '../components/AppleBallMatchingRow';
-import CatDogMatchingRow from '../components/CatDogMatchingRow';
 import GameFooter from '../components/GameFooter';
 import GameHeader from '../components/GameHeader';
 import LineDrawing from '../components/LineDrawing';
+import MatchingRow from '../components/MatchingRow';
 import { saveGameScore } from '../services/firestoreService';
 import { ANIMATION_DURATION, COLORS, GAME_LEVELS } from '../utils/constants';
 import {
@@ -315,7 +314,7 @@ export default function GameScreen({ navigation }) {
                   line.fromDot !== targetDot && line.toDot !== targetDot
                 ));
                 
-                const isCorrect = shouldConnect(activeDot, targetDot, currentLevel, currentLevelData.items);
+                const isCorrect = shouldConnect(activeDot, targetDot, currentLevel, currentLevelData.items, currentLevelData.matchingMode);
                 createPermanentLine(activeDot, targetDot, isCorrect);
               }
             });
@@ -344,36 +343,16 @@ export default function GameScreen({ navigation }) {
         {/* Main Content Area */}
         <View style={styles.matchingContainer}>
           {currentLevelData.items.map((item, index) => {
-            // Universal approach: determine text and dot IDs based on level requirements
-            let displayText = item.text;
-            let leftDotId = item.imageDotId;
-            let rightDotId = item.textDotId;
-            
-            // For level 1, swap the text display and dot connections
-            if (currentLevel === 1) {
-              if (item.imageId === 'dog') {
-                displayText = 'Cat';
-                leftDotId = 'dog_left';
-                rightDotId = 'cat_right'; // Dog image connects to cat text
-              } else if (item.imageId === 'cat2') {
-                displayText = 'Dog';
-                leftDotId = 'cat_left';
-                rightDotId = 'dog_right'; // Cat image connects to dog text
-              }
-            }
-            
-            // Use the appropriate component based on level
-            const Component = currentLevel === 1 ? CatDogMatchingRow : AppleBallMatchingRow;
-            
             return (
-              <Component
+              <MatchingRow
                 key={index}
                 assetName={item.imageId}
-                leftDotId={leftDotId}
-                rightDotId={rightDotId}
-                text={displayText}
+                leftDotId={item.imageDotId}
+                rightDotId={item.textDotId}
+                text={item.text}
                 activeDot={activeDot}
                 onDotLayout={saveDotPosition}
+                matchingMode={currentLevelData.matchingMode}
               />
             );
           })}
