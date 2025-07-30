@@ -40,7 +40,6 @@ A React Native/Expo matching game with universal matching logic and dynamic leve
    - ✅ Green lines = correct matches
    - ❌ Red lines = incorrect matches
 4. **Complete all matches** to proceed to the next level
-5. **Think carefully**: In Level 1, the displayed text may be misleading!
 
 ## Technical Features
 
